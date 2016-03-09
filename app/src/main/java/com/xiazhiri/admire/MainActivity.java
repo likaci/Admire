@@ -9,10 +9,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.xiazhiri.admire.model.SideBar;
 import com.xiazhiri.admire.service.AdmireService;
@@ -38,6 +46,8 @@ public class MainActivity extends AppCompatActivity
     DrawerLayout drawer;
     @Bind(R.id.nav_view)
     NavigationView navigationView;
+    @Bind(R.id.list)
+    RecyclerView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,11 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         initDrawer();
+
+        list.setLayoutManager(new LinearLayoutManager(this));
+        list.setItemAnimator(new DefaultItemAnimator());
+        list.setAdapter(new WebsiteListAdapter());
+
     }
 
     private void initDrawer() {
@@ -97,4 +112,39 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public class WebsiteListAdapter extends RecyclerView.Adapter<WebsiteListAdapter.ViewHolder> {
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_card_website, parent, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.title.setText("hello" + position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return 10;
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            @Bind(R.id.img)
+            ImageView img;
+            @Bind(R.id.title)
+            TextView title;
+            @Bind(R.id.desc)
+            TextView desc;
+
+            ViewHolder(View view) {
+                super(view);
+                ButterKnife.bind(this, view);
+            }
+        }
+
+    }
+
 }
