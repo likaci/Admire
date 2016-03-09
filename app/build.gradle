@@ -24,4 +24,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
+    //http://jakewharton.github.io/butterknife/
+    compile 'com.jakewharton:butterknife:7.0.1'
+    //https://github.com/ReactiveX/RxJava
+    compile 'io.reactivex:rxjava:1.1.1'
+    compile 'io.reactivex:rxandroid:1.1.0@aar'
+    //http://jsoup.org/
+    compile 'org.jsoup:jsoup:1.8.3'
 }
