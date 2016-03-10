@@ -23,8 +23,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiazhiri.admire.model.SideBar;
+import com.xiazhiri.admire.model.WebContent;
 import com.xiazhiri.admire.service.AdmireService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity
 
         initDrawer();
 
+        initWebsites("");
+
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setItemAnimator(new DefaultItemAnimator());
         list.setAdapter(new WebsiteListAdapter());
@@ -97,6 +101,25 @@ public class MainActivity extends AppCompatActivity
                 );
     }
 
+    private void initWebsites(String url) {
+        AdmireService.website(url)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1() {
+                    @Override
+                    public void call(Object o) {
+                        ArrayList<WebContent> webContentList = (ArrayList<WebContent>) o;
+                        WebsiteListAdapter adapter = (WebsiteListAdapter) list.getAdapter();
+                        adapter.list = webContentList;
+                        adapter.notifyDataSetChanged();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                    }
+                });
+    }
+
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -110,10 +133,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         drawer.closeDrawer(GravityCompat.START);
+        String url = item.getIntent().getDataString();
+        initWebsites(url);
         return true;
     }
 
     public class WebsiteListAdapter extends RecyclerView.Adapter<WebsiteListAdapter.ViewHolder> {
+        ArrayList<WebContent> list;
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -123,12 +149,18 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.title.setText("hello" + position);
+            if (list != null) {
+                WebContent data = list.get(position);
+                if (data != null) {
+                    holder.title.setText(data.getTitle());
+                    holder.desc.setText(data.getDesc());
+                }
+            }
         }
 
         @Override
         public int getItemCount() {
-            return 10;
+            return list == null ? 0 : list.size();
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {

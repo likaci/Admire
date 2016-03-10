@@ -3,21 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="5dp"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
         >
 
         <ImageView
             android:id="@+id/img"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:src="@mipmap/ic_launcher"
             />
 
@@ -25,9 +25,8 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/img"
-            android:layout_alignop="@id/img"
-            android:layout_marginLeft="32dp"
+            android:layout_alignTop="@id/img"
+            android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/img"
             android:gravity="center"
             android:text="标题"
@@ -37,8 +36,8 @@
             android:id="@+id/desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/img"
-            android:layout_marginTop="8dp"
+            android:layout_alignBottom="@id/img"
+            android:layout_alignLeft="@id/title"
             android:maxLines="2"
             android:text="描述"
             />
